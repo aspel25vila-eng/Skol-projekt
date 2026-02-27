@@ -1,16 +1,96 @@
- using UnityEngine;
+using UnityEngine;
+using TMPro;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-public class Slot : MonoBehaviour
+public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public bool hovering;
+
+    private ItemSO heldItems;
+    private int itemAmount;
+
+    private Image iconImage;
+    private TextMeshProUGUI amountTxt;
+
+
+    private void Awake()
     {
-        
+        iconImage = transform.GetChild(0).GetComponent<Image>();
+        amountTxt = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public ItemSO GetItem()
     {
-        
+        return itemAmount;
     }
+
+    public void SetItem(ItemSO item, int ammount = 1)
+    {
+        heldItem = item;
+        itemAmount = ammount;
+
+        UpdateSlot();
+    }
+
+    public void UpdateSlot()
+    {
+        if (heldItems != null)
+        {
+            iconImage.enabled = true;
+            iconImage.sprite = heldItems.icon;
+            amountTxt.text = itemAmount.ToString();
+        }
+        else
+        {
+            iconImage.enabled = false;
+            amountTxt.text = "";
+        }
+    }
+
+    public int AddAmount(int amountToAdd)
+    {
+        itemAmount += amountToAdd;
+        UpdateSlot();
+        return itemAmount;
+    }
+
+    public int RemoveAmount(int amountToRemove)
+    {
+        itemAmount -= amountToRemove;
+        if (itemAmount <= 0)
+        {
+            ClearSlot();
+        }
+        else
+        {
+            UpdateSlot();
+        }
+
+        return itemAmount;
+    }
+
+    public void ClearSlot()
+    {
+        heldItems = null;
+        itemAmount = 0;
+        UpdateSlot();
+    }
+
+    public bool HasItem()
+    {
+        return heldItem != null;
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        throw new System.NotImplementedException();
+    }
+
+ 
 }
