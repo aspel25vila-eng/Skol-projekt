@@ -20,14 +20,14 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         amountTxt = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
     }
 
-    public ItemSO GetItem()
+    public int GetItem()
     {
         return itemAmount;
     }
 
     public void SetItem(ItemSO item, int ammount = 1)
     {
-        heldItem = item;
+        heldItems = item;
         itemAmount = ammount;
 
         UpdateSlot();
@@ -79,7 +79,7 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public bool HasItem()
     {
-        return heldItem != null;
+        return heldItems != null;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
